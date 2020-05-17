@@ -1,0 +1,16 @@
+template<unsigned int N>
+struct fact_ {
+	static const unsigned long long int value = N*fact_<N - 1>::value;
+};
+template<>struct fact_<0> {
+	static const unsigned long long int value = 1;
+};
+
+const unsigned long long int fact_8= fact_<5>::value;
+
+
+int main()
+{
+	cout << fact_8 << endl;
+	return 0;
+}
