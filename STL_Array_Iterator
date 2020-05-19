@@ -1,0 +1,105 @@
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<iterator>
+using namespace std;
+template<class T>
+class cArray_
+{
+	struct Node {
+		T data;
+		Node* next;
+		Node(T d) :data(d), next(nullptr) {}
+	};
+
+	Node* head{};
+	Node* tail{};
+	int size{};
+
+public:
+	cArray_() = default;
+	cArray_(const T* st, const T* end) {
+		int len = end - st;
+
+		while (st !=end)
+		{
+			if (size == 0)
+			{
+				head = tail = new Node(*st);
+			}
+			else
+			{
+				tail->next = new Node(*st);
+				tail = tail->next;
+			}
+				
+			st++;
+			size++;
+		}
+
+	}
+	class Iterator {
+		Node* it;
+	public:
+		Iterator(Node* temp = nullptr) :it(temp) {}
+		Iterator(const Iterator& iT) {
+			
+			it = iT.it;
+		}
+
+		Iterator operator=(const Iterator& iT)
+		{
+			if (iT.it == this->it)
+				return *this;
+			this->it = iT.it;
+			return *this;
+		}
+		T operator*()
+		{
+			return this->it->data;
+		}
+		T& operator[](int index)
+		{
+			return this->it->data;
+		}
+		Iterator operator++()
+		{
+			Node* temp = this->it;
+			it = it->next;
+			return Iterator(temp);
+		}
+		bool operator!=(const Iterator& iT)const
+		{
+			if (this->it != iT.it)
+				return true;
+			return false;
+		}
+	};
+
+	Iterator begin() {
+		return  Iterator(head);
+	}
+
+	Iterator end() {
+		return  Iterator(tail->next);
+	}
+	
+	
+};
+
+int main() {
+
+	int STR[]{1,2,3,4 };
+	
+
+	cArray_<int>c_array(STR,STR+4);
+
+	cArray_<int>::Iterator it;
+
+	for (it = c_array.begin(); it != c_array.end(); ++it)
+		cout << *it << " ";
+	cout << endl;
+	return 0;
+}
+
